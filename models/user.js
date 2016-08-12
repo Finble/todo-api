@@ -3,9 +3,11 @@ var _ = require('underscore');
 var cryptojs = require('crypto-js');
 var jwt = require('jsonwebtoken'); 
 
+// sqlbrowser shows DB + user table
+
 module.exports = function(sequelize, DataTypes) {
-	var user = sequelize.define('user', {
-		email: {
+	var user = sequelize.define('user', {  //define user model + properties (headers + value criteria)
+		email: {   // header in DB user table
 			type: DataTypes.STRING, 
 			allowNull: false, 
 			unique: true, 
@@ -14,19 +16,19 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		
-		salt: {
+		salt: {  // header in DB user table
 			type: DataTypes.STRING
 		},
-		password_hash: {
+		password_hash: {  // header in DB user table
 			type: DataTypes.STRING
 		},
 		password: {
-			type: DataTypes.VIRTUAL, 
+			type: DataTypes.VIRTUAL, // header NOT in DB user table = VIRTUAL
 			allowNull: false, 
 			validate: {
 				len: [7, 100]  
 			},
-			set: function(value) {
+			set: function(value) {  // override set function with hash 
 				var salt = bcrypt.genSaltSync(10); 
 				var hashedPassword = bcrypt.hashSync(value, salt); 
 
