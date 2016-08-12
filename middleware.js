@@ -20,7 +20,7 @@ module.exports = function(db) {
 				next();
 			}).catch(function() {
 				res.status(401).send();
-			})
+			});
 		}
 	};
 };

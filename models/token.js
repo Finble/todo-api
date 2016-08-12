@@ -1,24 +1,21 @@
-// define new model (table in DB)
-// sqlbrowser shows DB + user table
-
-var cryptojs = require('crypto-js');  // to enable token to be hashed
+var cryptojs = require('crypto-js');  
 
 module.exports = function(sequelize, DataTypes) {
 
-	return sequelize.define('token', {  // define token + its properties:
+	return sequelize.define('token', {  
 		token: {
-			type: DataTypes.VIRTUAL,  // header NOT in DB user table = VIRTUAL
+			type: DataTypes.VIRTUAL,  
 			allowNull: false,
 			validate: {
 				len: [1]
 			},
-			set: function(value) { // override set function with hash 
+			set: function(value) { 
 				var hash = cryptojs.MD5(value).toString();
 
 				this.setDataValue('token', value);
 				this.setDataValue('tokenHash', hash);
 			}
 		},
-		tokenHash: DataTypes.STRING  // header in DB user table
+		tokenHash: DataTypes.STRING  
 	});
 }
