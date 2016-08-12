@@ -157,13 +157,13 @@ app.post('/users', function (req, res) {
 
 app.post('/users/login', function (req, res) {
     var body = _.pick(req.body, 'email', 'password');
-    var userInstance; // declare var
+    var userInstance; 
 
     db.user.authenticate(body).then(function (user) {
         var token = user.generateToken('authentication');
-        userInstance = user;  // assign value
+        userInstance = user;  
 
-        return db.token.create({  // saves token into DB
+        return db.token.create({  
             token: token
         });
     }).then(function (tokenInstance) {
@@ -173,11 +173,10 @@ app.post('/users/login', function (req, res) {
     });
 });
 
-
 // DELETE/users/login (DELETE A USER INSTANCE)
 
 app.delete('/users/login', middleware.requireAuthentication, function (req, res) {
-    req.token.destroy().then(function() {  // delete token instance
+    req.token.destroy().then(function() {  
         res.status(204).send();
     }).catch(function() {
         res.status(500).send();
